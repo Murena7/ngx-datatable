@@ -840,6 +840,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     return columns;
   }
 
+  @Input() scrollBarWidthPx = 0;
+
   /**
    * Recalculates the dimensions of the table size.
    * Internally calls the page size and row count calcs too.

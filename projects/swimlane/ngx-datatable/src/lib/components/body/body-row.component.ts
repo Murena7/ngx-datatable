@@ -122,13 +122,15 @@ export class DataTableBodyRowComponent implements DoCheck {
     return cls;
   }
 
+  @Input() scrollBarWidthPx = 0;
+
   @HostBinding('style.height.px')
   @Input()
   rowHeight: number;
 
   @HostBinding('style.width.px')
   get columnsTotalWidths(): string {
-    return this._columnGroupWidths.total;
+    return (+this._columnGroupWidths.total - this.scrollBarWidthPx).toString();
   }
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
@@ -183,9 +185,17 @@ export class DataTableBodyRowComponent implements DoCheck {
     const widths = this._columnGroupWidths;
     const offsetX = this.offsetX;
 
-    const styles = {
-      width: `${widths[group]}px`
-    };
+    let styles;
+
+    if (group === 'center') {
+      styles = {
+        width: `${widths[group] - this.scrollBarWidthPx}px`
+      };
+    } else {
+      styles = {
+        width: `${widths[group]}px`
+      };
+    }
 
     if (group === 'left') {
       translateXY(styles, offsetX, 0);

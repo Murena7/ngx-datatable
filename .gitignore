@@ -8,4 +8,4 @@ coverage/
 .idea
 yarn.lock
 /.vscode
-*.tgz
+#*.tgz

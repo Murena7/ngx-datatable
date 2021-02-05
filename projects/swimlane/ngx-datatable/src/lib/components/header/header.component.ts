@@ -316,13 +316,22 @@ export class DataTableHeaderComponent implements OnDestroy {
     }
   }
 
+  @Input() scrollBarWidthPx = 0;
+
   calcStylesByGroup(group: string): any {
     const widths = this._columnGroupWidths;
     const offsetX = this.offsetX;
 
-    const styles = {
-      width: `${widths[group]}px`
-    };
+    let styles;
+    if (group === 'center') {
+      styles = {
+        width: `${widths[group] - this.scrollBarWidthPx}px`
+      };
+    } else {
+      styles = {
+        width: `${widths[group]}px`
+      };
+    }
 
     if (group === 'center') {
       translateXY(styles, offsetX * -1, 0);

@@ -36,14 +36,14 @@ import { translateXY } from '../../utils/translate';
         [scrollbarV]="scrollbarV"
         [scrollbarH]="scrollbarH"
         [scrollHeight]="scrollHeight"
-        [scrollWidth]="columnGroupWidths?.total"
+        [scrollWidth]="columnGroupWidths?.total - scrollBarWidthPx"
         (scroll)="onBodyScroll($event)"
       >
         <datatable-summary-row
           *ngIf="summaryRow && summaryPosition === 'top'"
           [rowHeight]="summaryHeight"
           [offsetX]="offsetX"
-          [innerWidth]="innerWidth"
+          [innerWidth]="innerWidth - scrollBarWidthPx"
           [rows]="rows"
           [columns]="columns"
         >
@@ -51,7 +51,7 @@ import { translateXY } from '../../utils/translate';
         <datatable-row-wrapper
           [groupedRows]="groupedRows"
           *ngFor="let group of temp; let i = index; trackBy: rowTrackingFn"
-          [innerWidth]="innerWidth"
+          [innerWidth]="innerWidth - scrollBarWidthPx"
           [ngStyle]="getRowsStyles(group)"
           [rowDetail]="rowDetail"
           [groupHeader]="groupHeader"
@@ -66,8 +66,9 @@ import { translateXY } from '../../utils/translate';
             *ngIf="!groupedRows; else groupedRowsTemplate"
             tabindex="-1"
             [isSelected]="selector.getRowSelected(group)"
-            [innerWidth]="innerWidth"
+            [innerWidth]="innerWidth - scrollBarWidthPx"
             [offsetX]="offsetX"
+            [scrollBarWidthPx]="scrollBarWidthPx"
             [columns]="columns"
             [rowHeight]="getRowHeight(group)"
             [row]="group"
@@ -85,7 +86,8 @@ import { translateXY } from '../../utils/translate';
               *ngFor="let row of group.value; let i = index; trackBy: rowTrackingFn"
               tabindex="-1"
               [isSelected]="selector.getRowSelected(row)"
-              [innerWidth]="innerWidth"
+              [innerWidth]="innerWidth - scrollBarWidthPx"
+              [scrollBarWidthPx]="scrollBarWidthPx"
               [offsetX]="offsetX"
               [columns]="columns"
               [rowHeight]="getRowHeight(row)"
@@ -104,7 +106,7 @@ import { translateXY } from '../../utils/translate';
           [ngStyle]="getBottomSummaryRowStyles()"
           [rowHeight]="summaryHeight"
           [offsetX]="offsetX"
-          [innerWidth]="innerWidth"
+          [innerWidth]="innerWidth - scrollBarWidthPx"
           [rows]="rows"
           [columns]="columns"
         >
@@ -119,6 +121,7 @@ import { translateXY } from '../../utils/translate';
   }
 })
 export class DataTableBodyComponent implements OnInit, OnDestroy {
+  @Input() scrollBarWidthPx: number;
   @Input() scrollbarV: boolean;
   @Input() scrollbarH: boolean;
   @Input() loadingIndicator: boolean;
